@@ -1,34 +1,93 @@
-version: "2.0"
-
-intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
-
-responses:
-  utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
-
-  utter_goodbye:
-  - text: "Bye"
-
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
+version: '2.0'
+config:
+  store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+intents:
+- hola:
+    use_entities: true
+- adios:
+    use_entities: true
+- afirmar:
+    use_entities: true
+- negar:
+    use_entities: true
+- siento_bien:
+    use_entities: true
+- siento_mal:
+    use_entities: true
+- bot_challenge:
+    use_entities: true
+- grupos_neo:
+    use_entities: true
+- clima:
+    use_entities: true
+- pelicula:
+    use_entities: true
+- google:
+    use_entities: true
+entities: []
+slots:
+  titulo_pelicula:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  ciudad:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  query_google:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+responses:
+  utter_soy_un_bot:
+  - text: Soy un bot, creado en Neo
+  utter_hola:
+  - text: ¿Hola, qué tal?
+  utter_animar:
+  - image: https://i.imgur.com/nGF1K8f.jpg
+    text: 'Aquí hay algo para animarte:'
+  utter_eso_ayudo:
+  - text: ¿Eso te ayudó?
+  utter_feliz:
+  - text: ¡Genial, continúa!
+  utter_adios:
+  - text: Adiós
+  utter_grupos_neo:
+  - text: |-
+      Tenemos los siguientes grupos: #ClubdeestudiosNEO, #NEOGreenLover, #NEOGamer, #FamiliaNEO, #MusicaNEO, #NEOTrips, #NEODeportes,
+      #CocinandoconNEO, #NEOCinefilos, #EnglishClub
+  utter_ciudad:
+  - text: ¿De cual ciudad desea saber el clima?
+  utter_temperatura:
+  - text: La temperatura de hoy es {temp} grados Celcius.
+  utter_pelicula:
+  - text: Indíquenos el título de la película
+  utter_google:
+  - text: Indíquenos su consulta a google
+  utter_titulo:
+  - text: El nombre de la pelicula es {titulo} y su fecha de lanzamiento es {anhio}
+actions:
+- action_weather_api
+- action_movie_api
+- action_flush_slots
+- action_entidad_google
+forms:
+  pelicula_form:
+    required_slots:
+      titulo_pelicula:
+      - type: from_text
+  ciudad_form:
+    required_slots:
+      ciudad:
+      - type: from_text
+  google_form:
+    required_slots:
+      query_google:
+      - type: from_text
+e2e_actions: []
